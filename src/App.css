@@ -1,0 +1,57 @@
+.App {
+    text-align: center;
+    padding: 20px;
+}
+
+.banner {
+    margin-bottom: 20px;
+}
+
+    .banner img {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+    }
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.dropzone {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+    .dropzone p {
+        margin: 0;
+    }
+
+.password-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+    .password-section input {
+        margin-right: 10px;
+    }
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+input[type='checkbox'] {
+    margin-right: 5px;
+}
+
+@media (max-width: 768px) {
+    .banner img {
+        max-height: 150px;
+    }
+}
