@@ -49,7 +49,19 @@ const App = () => {
         end,
       };
       setEvents([...events, newEvent]);
-      localStorage.setItem('events', JSON.stringify([...events, newEvent]));
+    }
+  };
+
+  const handleEdit = (event) => {
+    if (!isAdmin) return;
+
+    const title = window.prompt('Enter updated event title:', event.title);
+    if (title) {
+      const updatedEvent = { ...event, title };
+      const updatedEvents = events.map((ev) =>
+        ev.id === updatedEvent.id ? updatedEvent : ev
+      );
+      setEvents(updatedEvents);
     }
   };
 
@@ -92,8 +104,29 @@ const App = () => {
     );
   };
 
+  const handleChangePassword = () => {
+    if (!isAdmin) return;
+
+    if (!validateAdminCredentials()) {
+      alert('Invalid admin credentials. Please try again.');
+      setUsernameInput('');
+      setPasswordInput('');
+      return;
+    }
+
+    const newPassword = window.prompt('Enter new admin password:');
+    if (newPassword) {
+      const newAdminCredentials = { ...adminCredentials, password: newPassword };
+      setAdminCredentials(newAdminCredentials);
+      alert('Password changed successfully!');
+    }
+  };
+
   return (
     <div className="App">
+      <div className="banner">
+        <img src="/sandata-banner.jpg" alt="Sandata Technologies Banner" />
+      </div>
       <h1>Event Calendar</h1>
       {isAdmin && (
         <>
@@ -118,24 +151,24 @@ const App = () => {
               value={passwordInput}
               onChange={(e) => setPasswordInput(e.target.value)}
             />
-            <button onClick={handleLoadEvents}>Load Events</button>
+            <button onClick={handleLoadEvents} disabled={!fileContent}>
+              Load Events
+            </button>
+            <button onClick={handleChangePassword}>Change Password</button>
           </div>
         </>
       )}
       <div className="calendar-container">
         <Calendar
           localizer={localizer}
-          events={events.map((event) => ({
-            ...event,
-            start: new Date(event.start),
-            end: new Date(event.end),
-          }))}
+          events={events}
           startAccessor="start"
           endAccessor="end"
           views={['month', 'week', 'day']}
           defaultView="month"
           selectable={isAdmin}
           onSelectSlot={handleSelect}
+          onSelectEvent={handleEdit}
           style={{ height: '100%', width: '100%' }}
         />
       </div>
